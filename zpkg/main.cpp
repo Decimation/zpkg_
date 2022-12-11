@@ -1,11 +1,14 @@
 // zpkg.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #include "main.h"
+
 int main(int argc, const char* argv[])
 {
-	auto s = ScoopPackageSource{};
-	for (const auto l = s.list(); auto& s2 : l) {
-		std::cout << s2;
+	for (auto s : PackageSource::all()) {
+		std::cout << std::format("{} >>", s->name()) << std::endl;
+		for (const auto l = s->list(); auto& s2 : l) {
+			std::cout << s2;
+		}
 	}
 	return 0;
 }
