@@ -4,7 +4,6 @@
 
 #include "cli.h"
 #include "PackageSource.h"
-#include "PackageSource.h"
 #include "util.h"
 
 class PackageSource
@@ -15,7 +14,16 @@ public:
 		return m_name;
 	}
 
-	virtual std::vector<std::string> list() = 0;
+	virtual std::vector<std::string> list()
+	{
+		return RunCommand(name(), {m_cmd_list});
+	}
+
+	virtual std::vector<std::string> search(std::string q)
+	{
+		return RunCommand(name(), {m_cmd_search, q});
+	}
+
 	static std::vector<PackageSource*> all();
 
 protected:
@@ -23,7 +31,11 @@ protected:
 
 	const std::string m_name;
 
-	explicit PackageSource(std::string name) : m_name(std::move(name))
+	const std::string m_cmd_list;
+	const std::string m_cmd_search;
+
+	explicit PackageSource(std::string name, std::string listArgs = "list", std::string searchArgs = "search")
+		: m_name(std::move(name)), m_cmd_list(std::move(listArgs)), m_cmd_search(std::move(searchArgs))
 	{
 	}
 };
@@ -34,28 +46,25 @@ public:
 	ScoopPackageSource() : PackageSource("scoop")
 	{
 	}
-
-	std::vector<std::string> list() override
-	{
-		return split(exec(std::format("{} {}", name(), "list").c_str()), ENV_NEWLINE);
-	}
 };
 
 class PacmanPackageSource final : public PackageSource
 {
 public:
-	PacmanPackageSource() : PackageSource("pacman")
+	PacmanPackageSource() : PackageSource("pacman", "-Q", "-Q")
 	{
 	}
+};
 
-	std::vector<std::string> list() override
+class WingetPackageSource final : public PackageSource
+{
+public:
+	WingetPackageSource() : PackageSource("winget")
 	{
-		return split(exec(std::format("{} {}", name(), "-Q").c_str()), ENV_NEWLINE);
 	}
-
 };
 
 inline std::vector<PackageSource*> PackageSource::all()
 {
-	return {new ScoopPackageSource(), new PacmanPackageSource()};
+	return {new ScoopPackageSource(), new PacmanPackageSource(), new WingetPackageSource()};
 }

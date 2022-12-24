@@ -1,20 +1,19 @@
 ﻿#pragma once
-#define __nodiscard [[nodiscard]]
 
-constexpr const char* ENV_NEWLINE = "\r\n";
+#include <cstdarg>
+#include <xutil.h>
+#include "Windows.h"
 
-inline std::vector<std::string> split(std::string s, const std::string& delimiter)
+static std::vector<std::string> RunCommand(std::string name, const std::vector<std::string>& args)
 {
-	size_t pos_start = 0, pos_end;
-	const size_t delim_len = delimiter.length();
-	std::vector<std::string> res;
+	std::string buf;
+	join(args, SPACE, buf);
 
-	while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
-		std::string token = s.substr(pos_start, pos_end - pos_start);
-		pos_start = pos_end + delim_len;
-		res.push_back(token);
-	}
+	const auto cmd = std::format("{} {}", name, buf);
 
-	res.push_back(s.substr(pos_start));
-	return res;
+	dbg_out("#> {}\n", cmd);
+
+	auto output = split(exec(cmd.c_str()), ENV_NEWLINE);
+
+	return output;
 }

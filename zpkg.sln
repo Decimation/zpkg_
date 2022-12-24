@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zpkg", "zpkg\zpkg.vcxproj", "{62324E0B-3A9B-4CA2-8D18-080A4056F5DE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdlib", "..\rdlib\rdlib\rdlib.vcxitems", "{53126E19-53FC-42B1-B794-ABB04B2BC236}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -27,5 +29,9 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {962AA650-A361-43C5-8D1D-95456EFA3AE5}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\rdlib\rdlib\rdlib.vcxitems*{53126e19-53fc-42b1-b794-abb04b2bc236}*SharedItemsImports = 9
+		..\rdlib\rdlib\rdlib.vcxitems*{62324e0b-3a9b-4ca2-8d18-080a4056f5de}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal

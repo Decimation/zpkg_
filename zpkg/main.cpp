@@ -6,6 +6,7 @@ int main(int argc, const char* argv[])
 {
 	for (auto s : PackageSource::all()) {
 		std::cout << std::format("{} >>", s->name()) << std::endl;
+		
 		for (const auto l = s->list(); auto& s2 : l) {
 			std::cout << s2;
 		}
